@@ -10,9 +10,9 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Iterable
+from xml.etree import ElementTree as ET
 
 import requests
-from lxml import etree, html
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -32,12 +32,6 @@ SESSION.headers.update(
         "Accept": "application/json,text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     }
 )
-
-XBRL_NAMESPACES = {
-    "ix": "http://www.xbrl.org/2013/inlineXBRL",
-    "xbrli": "http://www.xbrl.org/2003/instance",
-}
-
 
 @dataclass(frozen=True)
 class Filing:
@@ -84,6 +78,14 @@ def parse_number(value: str) -> float | None:
     if not match:
         return None
     return float(match.group(0))
+
+
+def local_name(tag: str) -> str:
+    return tag.split("}", 1)[-1]
+
+
+def parse_xml_document(document: str) -> ET.Element:
+    return ET.fromstring(document)
 
 
 def to_unix_timestamp(day: date) -> int:
@@ -143,23 +145,30 @@ def extract_share_events(filings: Iterable[Filing]) -> list[dict]:
             continue
 
         document = fetch_text(filing.url)
-        tree = etree.fromstring(document.encode("utf-8"), parser=etree.XMLParser(recover=True, huge_tree=True))
+        tree = parse_xml_document(document)
 
         context_dates: dict[str, str] = {}
-        for context in tree.xpath("//xbrli:context", namespaces=XBRL_NAMESPACES):
-            context_id = context.get("id")
-            instant = context.findtext(".//xbrli:instant", namespaces=XBRL_NAMESPACES)
+        for context in tree.iter():
+            if local_name(context.tag) != "context":
+                continue
+
+            context_id = context.attrib.get("id")
+            instant = None
+            for node in context.iter():
+                if local_name(node.tag) == "instant" and node.text:
+                    instant = node.text.strip()
+                    break
             if context_id and instant:
                 context_dates[context_id] = instant
 
         totals_by_date: dict[str, float] = {}
-        facts = tree.xpath(
-            '//ix:nonFraction[@name="dei:EntityCommonStockSharesOutstanding"]',
-            namespaces=XBRL_NAMESPACES,
-        )
+        for fact in tree.iter():
+            if local_name(fact.tag) != "nonFraction":
+                continue
+            if fact.attrib.get("name") != "dei:EntityCommonStockSharesOutstanding":
+                continue
 
-        for fact in facts:
-            context_ref = fact.get("contextRef")
+            context_ref = fact.attrib.get("contextRef")
             if not context_ref:
                 continue
             instant = context_dates.get(context_ref)
@@ -195,8 +204,8 @@ def extract_share_events(filings: Iterable[Filing]) -> list[dict]:
     return list(deduped.values())
 
 
-def parse_btc_table(table: html.HtmlElement) -> dict | None:
-    table_text = normalize_text(" ".join(table.xpath(".//text()")))
+def parse_btc_table(table: ET.Element) -> dict | None:
+    table_text = normalize_text(" ".join(table.itertext()))
     if "Aggregate BTC Holdings" not in table_text:
         return None
 
@@ -209,8 +218,15 @@ def parse_btc_table(table: html.HtmlElement) -> dict | None:
         return None
 
     row_values: list[str] = []
-    for row in table.xpath(".//tr"):
-        cells = [normalize_text(" ".join(cell.xpath(".//text()"))) for cell in row.xpath("./th|./td")]
+    for row in table.iter():
+        if local_name(row.tag) != "tr":
+            continue
+
+        cells = []
+        for cell in row:
+            if local_name(cell.tag) not in {"th", "td"}:
+                continue
+            cells.append(normalize_text(" ".join(cell.itertext())))
         cells = [cell for cell in cells if cell]
         if len(cells) >= 8 and "BTC Acquired" not in " ".join(cells):
             row_values = cells
@@ -239,10 +255,13 @@ def extract_holdings_events(filings: Iterable[Filing], start_day: date) -> list[
             continue
 
         document = fetch_text(filing.url)
-        tree = html.fromstring(document.encode("utf-8"))
+        tree = parse_xml_document(document)
 
         found = False
-        for table in tree.xpath("//table"):
+        for table in tree.iter():
+            if local_name(table.tag) != "table":
+                continue
+
             parsed = parse_btc_table(table)
             if not parsed:
                 continue

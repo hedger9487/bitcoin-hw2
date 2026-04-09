@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-09T18:43:44.124748+00:00",
+  "generatedAt": "2026-04-09T19:40:24.159349+00:00",
   "company": {
     "name": "Strategy Inc.",
     "ticker": "MSTR",
@@ -29,28 +29,28 @@
   "stats": {
     "latest": {
       "date": "2026-04-09",
-      "mstrClose": 128.819,
-      "btcClose": 71871.4219,
+      "mstrClose": 127.99,
+      "btcClose": 71844.3516,
       "btcHeld": 766970,
       "totalShares": 333752708,
-      "bitcoinNav": 55123224435.47,
-      "marketCap": 42993690091.85,
-      "navPerShare": 165.1619,
-      "mnav": 0.779956,
-      "premiumToNav": -0.220044,
-      "premiumToNavPct": -22.0044
+      "bitcoinNav": 55102462317.51,
+      "marketCap": 42717008429.41,
+      "navPerShare": 165.0997,
+      "mnav": 0.775229,
+      "premiumToNav": -0.224771,
+      "premiumToNavPct": -22.4771
     },
     "premiumSummary": {
-      "mean30d": -0.138178,
-      "mean90d": -0.182865,
+      "mean30d": -0.138335,
+      "mean90d": -0.182917,
       "low52w": -0.317218,
       "high52w": 1.009916,
-      "percentile": 0.1357
+      "percentile": 0.124
     },
     "relativeMoves": {
-      "premium30dChange": -0.151891,
-      "mstr30dReturn": -0.03434,
-      "btc30dReturn": 0.065491
+      "premium30dChange": -0.157031,
+      "mstr30dReturn": -0.040555,
+      "btc30dReturn": 0.06509
     },
     "coverage": {
       "startDate": "2025-03-31",
@@ -4118,16 +4118,16 @@
     },
     {
       "date": "2026-04-09",
-      "mstrClose": 128.819,
-      "btcClose": 71871.4219,
+      "mstrClose": 127.99,
+      "btcClose": 71844.3516,
       "btcHeld": 766970,
       "totalShares": 333752708,
-      "bitcoinNav": 55123224435.47,
-      "marketCap": 42993690091.85,
-      "navPerShare": 165.1619,
-      "mnav": 0.779956,
-      "premiumToNav": -0.220044,
-      "premiumToNavPct": -22.0044
+      "bitcoinNav": 55102462317.51,
+      "marketCap": 42717008429.41,
+      "navPerShare": 165.0997,
+      "mnav": 0.775229,
+      "premiumToNav": -0.224771,
+      "premiumToNavPct": -22.4771
     }
   ],
   "sources": [
