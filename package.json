@@ -11,6 +11,6 @@
     "check": "node --check server.js && node --check scripts/dev.js && node --check api/summary.js && node --check api/redeploy.js"
   },
   "engines": {
-    "node": ">=10"
+    "node": "20.x"
   }
 }
