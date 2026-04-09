@@ -197,7 +197,7 @@ This repository now includes [vercel.json](/home/imlab306/smile/CCnoCC/bitcoin/v
 buildCommand: npm run build
 ```
 
-That build command installs Python requirements and regenerates the dataset automatically.
+On Vercel, Python dependencies from `requirements.txt` are installed by the platform first, and then `npm run build` regenerates the dataset.
 
 ### Vercel environment variables
 
