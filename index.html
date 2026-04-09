@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Strategy Premium to NAV Monitor</title>
+    <meta
+      name="description"
+      content="A web-based DAT.co monitor for Strategy's Premium to NAV, built from SEC filings, daily market data, and an editorial design system."
+    />
+    <link rel="icon" type="image/svg+xml" href="./assets/icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js" defer></script>
+    <script type="module" src="./assets/js/main.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="container site-header__inner">
+          <a class="brand" href="#top">
+            <span class="brand__mark">B</span>
+            <span class="brand__copy">
+              <strong id="brandTitle">Bitcoin Treasury Ledger</strong>
+              <span id="brandSubtitle">DAT.co indicator monitor</span>
+            </span>
+          </a>
+
+          <div class="header-actions">
+            <nav class="site-nav" aria-label="Primary">
+              <a href="#dashboard" id="navDashboard">Dashboard</a>
+              <a href="#indicator-brief" id="navIndicator">Indicator</a>
+              <a href="#methodology" id="navMethodology">Methodology</a>
+              <a href="#report" id="navReport">Report</a>
+            </nav>
+
+            <div class="locale-switch" role="group" aria-label="Language switch">
+              <button class="locale-switch__button" data-locale="en">EN</button>
+              <button class="locale-switch__button" data-locale="zh-TW">繁中</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="container hero__grid">
+            <div class="hero__content">
+              <p class="eyebrow" id="heroEyebrow">Selected Indicator: Premium to NAV</p>
+              <h1 id="heroTitle">
+                Watch how Strategy trades against the Bitcoin it actually holds.
+              </h1>
+              <p class="hero__lede" id="heroLede">
+                This site tracks one of the core DAT.co valuation signals:
+                whether the market prices Strategy above or below the spot value
+                of its treasury. The series is built from daily closes, official
+                SEC bitcoin updates, and official common-share disclosures.
+              </p>
+              <div class="hero__actions">
+                <a class="button button--brand" href="#dashboard" id="heroPrimaryCta">Open Dashboard</a>
+                <a class="button button--secondary" href="#methodology" id="heroSecondaryCta">Read Methodology</a>
+              </div>
+              <div class="hero__meta" id="heroMeta"></div>
+            </div>
+
+            <aside class="hero-panel">
+              <div class="hero-panel__ornament" aria-hidden="true">
+                <div class="hero-panel__orb"></div>
+                <div class="hero-panel__ring hero-panel__ring--a"></div>
+                <div class="hero-panel__ring hero-panel__ring--b"></div>
+                <div class="hero-panel__stroke"></div>
+              </div>
+              <div class="hero-panel__card">
+                <p class="eyebrow eyebrow--muted" id="currentReadingLabel">Current Reading</p>
+                <div class="headline-stat" id="currentPremium">--</div>
+                <p class="hero-panel__summary" id="currentSummary">
+                  Loading the latest valuation spread.
+                </p>
+                <dl class="hero-panel__facts" id="heroFacts"></dl>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="chapter chapter--dark" id="indicator-brief">
+          <div class="container brief-grid">
+            <article class="brief-card">
+              <p class="eyebrow eyebrow--muted" id="brief1Eyebrow">What indicator did I choose?</p>
+              <h2 id="brief1Title">Premium to NAV</h2>
+              <p id="brief1Body">
+                Premium to NAV measures how far Strategy's equity value trades
+                above or below the spot value of the bitcoin sitting on its
+                balance sheet.
+              </p>
+            </article>
+            <article class="brief-card">
+              <p class="eyebrow eyebrow--muted" id="brief2Eyebrow">Why choose it?</p>
+              <h2 id="brief2Title">It captures valuation heat</h2>
+              <p id="brief2Body">
+                Unlike raw price alone, the premium isolates whether investors
+                are paying extra for treasury strategy, access, leverage,
+                execution, or optionality beyond the underlying BTC.
+              </p>
+            </article>
+            <article class="brief-card">
+              <p class="eyebrow eyebrow--muted" id="brief3Eyebrow">Relationship with BTC</p>
+              <h2 id="brief3Title">It shows whether equity is outrunning the asset</h2>
+              <p id="brief3Body">
+                When Bitcoin rises and the premium expands, investors are paying
+                even more for the corporate wrapper. When Bitcoin rises but the
+                premium compresses, the stock is lagging the treasury itself.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="chapter" id="philosophy">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" id="philosophyEyebrow">DAT.co lens</p>
+                <h2 id="philosophyTitle">Built around treasury-company thinking</h2>
+              </div>
+              <p class="section-heading__text" id="philosophyText">
+                A better DAT.co product should not only show whether the stock
+                is expensive. It should also surface the treasury per share,
+                dilution path, and how the capital machine is compounding BTC.
+              </p>
+            </div>
+            <div class="philosophy-grid" id="philosophyGrid"></div>
+          </div>
+        </section>
+
+        <section class="chapter" id="dashboard">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" id="dashboardEyebrow">Dashboard</p>
+                <h2 id="dashboardTitle">Daily monitor</h2>
+              </div>
+              <p class="section-heading__text" id="dashboardText">
+                Switch between multiple DAT.co indicators, then zoom the window
+                to inspect treasury expansion, dilution pressure, and valuation
+                compression.
+              </p>
+            </div>
+
+            <div class="stats-grid" id="statsGrid"></div>
+
+            <div class="dashboard-grid">
+              <article class="panel panel--feature">
+                <div class="panel__header panel__header--stacked">
+                  <div class="panel__header panel__header--compact">
+                    <div>
+                      <p class="eyebrow eyebrow--muted" id="primaryChartEyebrow">Indicator lab</p>
+                      <h3 id="primaryChartTitle">DAT.co indicators over time</h3>
+                    </div>
+                    <p class="panel__caption" id="primaryChartCaption">
+                      Move your cursor on the chart to inspect the crosshair and
+                      compare valuation changes precisely.
+                    </p>
+                  </div>
+
+                  <div class="indicator-toggle" id="indicatorToggle" role="tablist" aria-label="Indicator selector"></div>
+                </div>
+
+                <div class="range-toggle" role="tablist" aria-label="Time range">
+                  <button class="range-toggle__button" data-range="1M">1M</button>
+                  <button class="range-toggle__button" data-range="3M">3M</button>
+                  <button class="range-toggle__button" data-range="6M">6M</button>
+                  <button class="range-toggle__button" data-range="YTD">YTD</button>
+                  <button class="range-toggle__button is-active" data-range="1Y">1Y</button>
+                  <button class="range-toggle__button" data-range="ALL">All</button>
+                </div>
+
+                <div class="chart-shell">
+                  <canvas id="premiumChart" aria-label="DAT.co indicator chart"></canvas>
+                </div>
+
+                <div class="chart-footer">
+                  <p id="chartCaption">
+                    Loading indicator chart and acquisition markers.
+                  </p>
+                  <a class="text-link" href="./assets/data/strategy-premium-nav.json" download id="downloadDatasetLink">
+                    Download dataset
+                  </a>
+                </div>
+              </article>
+
+              <aside class="panel panel--sidebar">
+                <div class="panel__header panel__header--stacked">
+                  <div>
+                    <p class="eyebrow eyebrow--muted" id="signalEyebrow">Signal brief</p>
+                    <h3 id="signalTitle">Reading the tape</h3>
+                  </div>
+                  <div class="valuation-lane">
+                    <div class="valuation-lane__track">
+                      <span class="valuation-lane__dot" id="valuationDot"></span>
+                    </div>
+                    <div class="valuation-lane__labels">
+                      <span id="valuationLabelLow">Discount</span>
+                      <span id="valuationLabelMid">1Y percentile</span>
+                      <span id="valuationLabelHigh">Premium</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="narrative" id="narrative"></div>
+
+                <div class="ai-card">
+                  <div class="ai-card__header">
+                    <div>
+                      <p class="eyebrow eyebrow--muted" id="aiEyebrow">Optional bonus</p>
+                      <h4 id="aiTitle">AI-generated summary</h4>
+                    </div>
+                    <button class="button button--ink" id="aiSummaryButton">
+                      Generate
+                    </button>
+                  </div>
+                  <p class="ai-card__note" id="aiNote">
+                    This calls a server-side route only if
+                    <code>OPENAI_API_KEY</code> is configured at deployment
+                    time. The dashboard works without it.
+                  </p>
+                  <div class="ai-card__body" id="aiSummaryBody">
+                    Use the built-in signal brief, or generate a short LLM
+                    narrative when your deployment is configured for it.
+                  </div>
+                </div>
+              </aside>
+            </div>
+
+            <div class="panel panel--secondary">
+              <div class="panel__header">
+                <div>
+                  <p class="eyebrow eyebrow--muted" id="contextEyebrow">Context chart</p>
+                  <h3 id="contextTitle">MSTR versus BTC, rebased</h3>
+                </div>
+                <p class="panel__caption" id="contextText">
+                  Rebased to 100 at the start of the selected range to show
+                  whether the stock is amplifying or lagging Bitcoin.
+                </p>
+              </div>
+              <div class="chart-shell chart-shell--compact">
+                <canvas id="relativeChart" aria-label="Relative performance chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="chapter" id="timeline">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" id="timelineEyebrow">Treasury flow</p>
+                <h2 id="timelineTitle">Recent holding updates</h2>
+              </div>
+              <p class="section-heading__text" id="timelineText">
+                Strategy's weekly 8-K disclosures give the indicator its
+                treasury heartbeat. These cards summarize the latest steps in
+                the BTC balance.
+              </p>
+            </div>
+
+            <div class="timeline-grid" id="timelineGrid"></div>
+          </div>
+        </section>
+
+        <section class="chapter chapter--dark" id="methodology">
+          <div class="container methodology-grid">
+            <article class="formula-card">
+              <p class="eyebrow eyebrow--muted" id="formulaEyebrow">Formula</p>
+              <h2 id="formulaTitle">Premium to NAV</h2>
+              <pre><code id="formulaCode">((share price × common shares outstanding)
+÷ (bitcoin held × BTC price)) − 1</code></pre>
+              <p id="formulaBody">
+                A value above zero means Strategy trades above the spot value of
+                its bitcoin. A value below zero means the stock sits below
+                treasury value.
+              </p>
+            </article>
+
+            <article class="method-card">
+              <p class="eyebrow eyebrow--muted" id="methodEyebrow">Data collection</p>
+              <h2 id="methodTitle">Source stack</h2>
+              <ul id="methodologyList" class="plain-list"></ul>
+            </article>
+
+            <article class="method-card">
+              <p class="eyebrow eyebrow--muted" id="interpretEyebrow">Interpretation</p>
+              <h2 id="interpretTitle">How this affects BTC analysis</h2>
+              <div id="btcRelationship" class="narrative narrative--light"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="chapter" id="report">
+          <div class="container">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow" id="reportEyebrow">Report support</p>
+                <h2 id="reportTitle">Submission-ready notes</h2>
+              </div>
+              <p class="section-heading__text" id="reportText">
+                This section mirrors the assignment structure so you can lift
+                the key points directly into your written report.
+              </p>
+            </div>
+
+            <div class="report-grid">
+              <article class="report-card">
+                <h3 id="reportIndicatorTitle">Selected indicator</h3>
+                <div id="reportIndicator" class="narrative narrative--compact"></div>
+              </article>
+              <article class="report-card">
+                <h3 id="reportBtcTitle">Relationship with BTC</h3>
+                <div id="reportBtc" class="narrative narrative--compact"></div>
+              </article>
+              <article class="report-card">
+                <h3 id="reportDeployTitle">Deployment note</h3>
+                <div class="narrative narrative--compact">
+                  <p id="reportDeployBody">
+                    Add your public deployment URL here after publishing the
+                    site. The project is structured to deploy cleanly to Vercel
+                    as a static frontend with an optional serverless summary
+                    route.
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container site-footer__inner">
+          <p id="footerMeta">
+            Built for DAT.co monitoring with SEC filings and daily market data.
+          </p>
+          <p>
+            <a href="./REPORT.md" id="footerReportLink">Report draft</a>
+            <span class="footer-separator">/</span>
+            <a href="./README.md" id="footerReadmeLink">README</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

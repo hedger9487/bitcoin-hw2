@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bitcoin Treasury Ledger">
+  <rect width="64" height="64" rx="18" fill="#f5f4ed" />
+  <rect x="8" y="8" width="48" height="48" rx="14" fill="#c96442" />
+  <path
+    d="M27 18h9.3c8.7 0 13.7 4.1 13.7 10.9 0 4.2-2.3 7.2-6 8.6 4.2 1.1 6.7 4.1 6.7 8.5 0 7.2-5.4 11-14.9 11H27V18zm8.9 16.1c4.1 0 6.1-1.4 6.1-4.4 0-3-2-4.4-6.1-4.4h-.8v8.8h.8zm1.1 15.4c4.2 0 6.3-1.5 6.3-4.7 0-3.3-2.1-4.8-6.3-4.8h-1.9v9.5H37z"
+    fill="#faf9f5"
+  />
+</svg>
