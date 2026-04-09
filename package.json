@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "start": "node server.js",
-    "build": "python3 scripts/generate_dataset.py",
+    "build": "python3 scripts/generate_dataset.py && node scripts/build-static.js",
     "refresh:data": "python3 scripts/generate_dataset.py",
-    "check": "node --check server.js && node --check scripts/dev.js && node --check api/summary.js && node --check api/redeploy.js"
+    "check": "node --check server.js && node --check scripts/dev.js && node --check scripts/build-static.js && node --check api/summary.js && node --check api/redeploy.js"
   },
   "engines": {
     "node": "20.x"

@@ -197,7 +197,7 @@ This repository now includes [vercel.json](/home/imlab306/smile/CCnoCC/bitcoin/v
 buildCommand: npm run build
 ```
 
-On Vercel, Python dependencies from `requirements.txt` are installed by the platform first, and then `npm run build` regenerates the dataset.
+On Vercel, Python dependencies from `requirements.txt` are installed by the platform first, and then `npm run build` regenerates the dataset and prepares a static `public/` output folder for deployment.
 
 ### Vercel environment variables
 
@@ -249,6 +249,7 @@ This keeps the public site mostly static while still refreshing data automatical
 - [assets/data/strategy-premium-nav.json](/home/imlab306/smile/CCnoCC/bitcoin/assets/data/strategy-premium-nav.json): generated dataset
 - [scripts/generate_dataset.py](/home/imlab306/smile/CCnoCC/bitcoin/scripts/generate_dataset.py): SEC + market-data pipeline
 - [scripts/dev.js](/home/imlab306/smile/CCnoCC/bitcoin/scripts/dev.js): local auto-refresh bootstrap
+- [scripts/build-static.js](/home/imlab306/smile/CCnoCC/bitcoin/scripts/build-static.js): prepares `public/` for Vercel static output
 - [scripts/load-env.js](/home/imlab306/smile/CCnoCC/bitcoin/scripts/load-env.js): local `.env.local` loader
 - [REPORT.md](/home/imlab306/smile/CCnoCC/bitcoin/REPORT.md): final assignment report draft
 
